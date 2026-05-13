@@ -1,5 +1,6 @@
 import random
 
+
 def Checking_the_input_of_level():
      stap=None
      while stap == None:
@@ -12,23 +13,45 @@ def Checking_the_input_of_level():
 
 
 def Checking_the_input():
-    pass
+     stap=None
+     while stap == None:
+      your_choise_gass = input("").lower()
+      if your_choise_gass.isalpha() and "z" >= your_choise_gass >= "a" and len(your_choise_gass)==1:
+          return your_choise_gass
+      elif len(your_choise_gass) > 1 :
+          print("Enter input that contains only one character") 
+      else:
+          print("Enter only foreign characters")    
+
+      
+     
 
 
 
-def Checking_caunt_the_word():
-    pass
+def Checking_caunt_the_word(word,leter):
+    return word.count(leter)
+    
 
 
-def Checking_index_woile_count_mor_1():
-    pass
+def Checking_index_woile_count_1(word,leter):
+    return word.index(leter)
+   
+    
 
 
 
 
-def Checking_index_woile_count_mor_2():
-    pass
+def Checking_index_woile_count_mor_1(word,leter,caunter1):
+    caunter_1 = -1
+    indexes = []
+    for i in range(caunter1):
+        ind=word.index(leter ,caunter_1+1)
+        indexes.append(ind)
+        caunter_1=ind
+    return indexes    
+        
 
+    
 
 
 
@@ -58,7 +81,7 @@ def Return_list_of_word(choise):
 
 
 def statr_game():
-    status_word = ""
+    status_word = []
     Remaining_attempts = 0
     letters_he_guessed = []
     exit = 0
@@ -68,10 +91,10 @@ def statr_game():
             
         if caunt==0:
 
-            print("to start the game enter 1 ")
+            print("to START the game enter  1  ")
             print("to EXIT from the game enter any other key")
 
-            your_choise = input("please enter yout choise")
+            your_choise = input("please enter yout choise ")
             if your_choise != "1":
                 exit += 1
                 continue
@@ -87,11 +110,52 @@ def statr_game():
 
             list_the_curent_game = Return_list_of_word(your_choise_level)
 
-            the_word_for_game=random.choice(list_the_curent_game)
+            the_word_for_game = list(random.choice(list_the_curent_game))
+            status_word =list(len(the_word_for_game)* "*")
             caunt += 1
         
+        
+        print(the_word_for_game)
+        print(f"the status word is {"".join(status_word)}") 
+        print(f"the Remaining_attempts is {Remaining_attempts} ")
+        print(f"the letters_he_guessed is {"".join(letters_he_guessed)} ")
+
+        if Remaining_attempts == 0:
+            print("You lost the game!!! The amount of guesses for the game has run out")
+ 
+            exit += 1
+            continue
+
+
+
+        print("please enter your gass : only leter")
+        gass_of_plyer = Checking_the_input()
+        
+        
+
+        if gass_of_plyer in the_word_for_game:
+           
+            caunt_the_word = Checking_caunt_the_word(the_word_for_game,gass_of_plyer)
+            if caunt_the_word == 1:
+                index_1=Checking_index_woile_count_1(the_word_for_game,gass_of_plyer)
+                status_word[index_1] = gass_of_plyer
+            else:
+                 index_more_1=Checking_index_woile_count_mor_1(the_word_for_game,gass_of_plyer,caunt_the_word)
+                 for item in index_more_1:
+                     status_word[item] = gass_of_plyer
+            if status_word ==  the_word_for_game :
+                print(f"Well done, you won the game :the word is {"".join(the_word_for_game)} ") 
+                exit+=1
+                continue
         else:
-            print(f"the status word is {status_word} the Remaining_attempts is {Remaining_attempts} the letters_he_guessed {letters_he_guessed}")
+            if gass_of_plyer not in letters_he_guessed:
+                letters_he_guessed.append(gass_of_plyer) 
+                Remaining_attempts -= 1
+                continue
+                   
+                
+statr_game()
+
 
 
 
